@@ -72,19 +72,37 @@ def load_xml_file(filepath):
         print(f"Błąd: {e}")
         return None
 
+def write_to_xml_file(filepath, data):
+    try:
+        tree = ET.ElementTree(data)
+        with open(filepath, 'wb') as xml_file:
+            tree.write(xml_file)
+        print(f"Pomyślnie zapisano dane do pliku XML: {filepath}")
+    except Exception as e:
+        print(f"Błąd podczas zapisywania do pliku XML: {e}")
 
 def main():
     args = parse_arguments()
     print('Plik wejściowy:', args.input_file)
     print('Plik wyjściowy:', args.output_file)
 
-    # Wczytywanie pliku JSON
+    # Wczytywanie pliku
     if args.input_file_extension == 'json':
         data = load_json_file(args.input_file)
         print(data)  # Wydrukowanie wczytanych danych
     elif args.input_file_extension == 'yaml' or args.input_file_extension == 'yml':
         data = load_yaml_file(args.input_file)
         print(data)  # Wydrukowanie wczytanych danych
+    elif args.input_file_extension == 'xml':
+        data = load_xml_file(args.input_file)
+        print(data)  # Wydrukowanie wczytanych danych
 
-    # Zapisywanie danych do pliku JSON
-    output_file_extension = args.output_file.split
+    # Zapisywanie danych do pliku
+    output_file_extension = args.output_file.split('.')[-1]
+    if output_file_extension == 'json':
+        write_to_json_file(args.output_file, data)
+    elif output_file_extension == 'yaml' or output_file_extension == 'yml':
+        write_to_yaml_file(args.output_file, data)
+    elif output_file_extension == 'xml':
+        write_to_xml_file(args.output_file, data)
+
