@@ -1,7 +1,7 @@
 import argparse
 import json
 import yaml
-
+import xml.etree.ElementTree as ET
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Program do konwersji formatów plików.')
@@ -57,6 +57,21 @@ def write_to_yaml_file(filepath, data):
         print(f"Pomyślnie zapisano dane do pliku YAML: {filepath}")
     except Exception as e:
         print(f"Błąd podczas zapisywania do pliku YAML: {e}")
+
+
+def load_xml_file(filepath):
+    try:
+        tree = ET.parse(filepath)
+        root = tree.getroot()
+        print("Pomyślnie wczytano plik XML.")
+        return root
+    except ET.ParseError:
+        print("Błąd: plik XML jest niepoprawny.")
+        return None
+    except Exception as e:
+        print(f"Błąd: {e}")
+        return None
+
 
 def main():
     args = parse_arguments()
